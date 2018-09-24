@@ -1,0 +1,66 @@
+version: "2"
+
+services:
+  project1:
+    build: $PROJECT1
+    depends_on:
+      - mariadb
+      - drush
+    environment:
+      VIRTUAL_HOST: $PROJECT1.domain.com
+    volumes:
+      - ./$PROJECT1/:/var/www/html
+    volumes_from:
+      - drush
+    restart: always
+
+  project2:
+    build: $PROJECT2
+    depends_on:
+      - mariadb
+    environment:
+      VIRTUAL_HOST:  $PROJECT2.domain.com
+    volumes:
+      - ./$PROJECT2/:/var/www/html
+    volumes_from:
+      - drush
+    restart: always
+
+  project3:
+    build: $PROJECT3
+    depends_on:
+      - mariadb
+    environment:
+      VIRTUAL_HOST:  $PROJECT3.domain.com
+    volumes:
+      - ./$PROJECT3/:/var/www/html
+    volumes_from:
+      - drush
+    links:
+    - mariadb
+    restart: always
+
+  mariadb:
+    image: mariadb:$MARIADB_TAG
+    container_name: "mariadb"
+    stop_grace_period: 30s
+    environment:
+      MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
+      MYSQL_DATABASE: $DB_NAME
+      MYSQL_USER: $DB_USER
+      MYSQL_PASSWORD: $DB_PASSWORD
+
+  drush:
+    build: $DRUSH_DIR
+    container_name: "drush"
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    ports:
+      - "8080:80"
+      - "4443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
+    restart: always
+    privileged: true
