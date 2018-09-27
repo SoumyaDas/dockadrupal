@@ -1,10 +1,11 @@
 version: "2"
 
 services:
-  project1:
+  mywebapp:
     build: $PROJECT1
+    container_name: $PROJECT1.mywebapp
     depends_on:
-      - mariadb
+      - mariadb1
       - drush
     environment:
       VIRTUAL_HOST: $PROJECT1.domain.com
@@ -12,24 +13,31 @@ services:
       - ./$PROJECT1/:/var/www/html
     volumes_from:
       - drush
+    links:
+      - mariadb1:mariadb
     restart: always
 
-  project2:
+  mywebapp2:
     build: $PROJECT2
+    container_name: $PROJECT2.mywebapp
     depends_on:
-      - mariadb
+      - mariadb2
+      - drush
     environment:
       VIRTUAL_HOST:  $PROJECT2.domain.com
     volumes:
       - ./$PROJECT2/:/var/www/html
     volumes_from:
       - drush
+    links:
+      - mariadb2:mariadb
     restart: always
 
-  project3:
+  mywebapp3:
     build: $PROJECT3
+    container_name: $PROJECT3.mywebapp
     depends_on:
-      - mariadb
+      - mariadb3
       - drush
     environment:
       VIRTUAL_HOST:  $PROJECT3.domain.com
@@ -38,12 +46,32 @@ services:
     volumes_from:
       - drush
     links:
-      - mariadb
+      - mariadb3:mariadb
     restart: always
 
-  mariadb:
+  mariadb1:
     image: mariadb:$MARIADB_TAG
-    container_name: "mariadb"
+    container_name: $PROJECT1.mariadb
+    stop_grace_period: 30s
+    environment:
+      MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
+      MYSQL_DATABASE: $DB_NAME
+      MYSQL_USER: $DB_USER
+      MYSQL_PASSWORD: $DB_PASSWORD
+
+  mariadb2:
+    image: mariadb:$MARIADB_TAG
+    container_name: $PROJECT2.mariadb
+    stop_grace_period: 30s
+    environment:
+      MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
+      MYSQL_DATABASE: $DB_NAME
+      MYSQL_USER: $DB_USER
+      MYSQL_PASSWORD: $DB_PASSWORD
+
+  mariadb3:
+    image: mariadb:$MARIADB_TAG
+    container_name: $PROJECT3.mariadb
     stop_grace_period: 30s
     environment:
       MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
@@ -58,11 +86,13 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     depends_on:
-      - mariadb
-    links:
-      - mariadb:db
+      - mariadb1
     environment:
       VIRTUAL_HOST: pma.domain.com
+      MYSQL_USERNAME: root
+      MYSQL_ROOT_PASSWORD: root
+      PMA_HOSTS: mariadb1, mariadb2, mariadb3
+      PMA_ARBITRARY: 1
 
   nginx-proxy:
     image: jwilder/nginx-proxy
