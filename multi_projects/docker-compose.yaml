@@ -30,6 +30,7 @@ services:
     build: $PROJECT3
     depends_on:
       - mariadb
+      - drush
     environment:
       VIRTUAL_HOST:  $PROJECT3.domain.com
     volumes:
@@ -37,7 +38,7 @@ services:
     volumes_from:
       - drush
     links:
-    - mariadb
+      - mariadb
     restart: always
 
   mariadb:
@@ -53,6 +54,15 @@ services:
   drush:
     build: $DRUSH_DIR
     container_name: "drush"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+      - mariadb
+    links:
+      - mariadb:db
+    environment:
+      VIRTUAL_HOST: pma.domain.com
 
   nginx-proxy:
     image: jwilder/nginx-proxy
