@@ -27,4 +27,10 @@ Each environment is consist of
  Now browse your web application from your favourite browser (tested on chrome/fedora) with the url --
   -- https://mywebapp1.demoserver.com:4443
   
- 
+## Maintenance
+
+We actively monitor the issue queue, so please log any [**issues**](https://github.com/SoumyaDas/dockadrupal/issues) that you encounter. Any contribution is also welcomed.
+
+## License
+
+This project is licensed under the MIT open source license.
