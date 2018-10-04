@@ -1,5 +1,5 @@
 FROM drush/drush:8
-
+MAINTAINER Soumya Das <ssdas@live.in>
 # Move drush to a more generic path so it can be used with any image
 RUN mkdir -p /drush && \
     mv -f /usr/local/bin/drush /drush/drush

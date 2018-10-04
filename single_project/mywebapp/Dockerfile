@@ -1,5 +1,5 @@
 FROM php:7.1-apache
-
+MAINTAINER Soumya Das <ssdas@live.in>
 # Install packages
 RUN rm /bin/sh && \
     ln -s /bin/bash /bin/sh && \
