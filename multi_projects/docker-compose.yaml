@@ -3,12 +3,11 @@ version: "2"
 services:
   mywebapp:
     build: $PROJECT1
-    container_name: $PROJECT1.mywebapp
     depends_on:
       - mariadb1
       - drush
     environment:
-      VIRTUAL_HOST: $PROJECT1.domain.com
+      VIRTUAL_HOST: $PROJECT1.demoserver.com
     volumes:
       - ./$PROJECT1/:/var/www/html
     volumes_from:
@@ -19,12 +18,11 @@ services:
 
   mywebapp2:
     build: $PROJECT2
-    container_name: $PROJECT2.mywebapp
     depends_on:
       - mariadb2
       - drush
     environment:
-      VIRTUAL_HOST:  $PROJECT2.domain.com
+      VIRTUAL_HOST:  $PROJECT2.demoserver.com
     volumes:
       - ./$PROJECT2/:/var/www/html
     volumes_from:
@@ -35,12 +33,11 @@ services:
 
   mywebapp3:
     build: $PROJECT3
-    container_name: $PROJECT3.mywebapp
     depends_on:
       - mariadb3
       - drush
     environment:
-      VIRTUAL_HOST:  $PROJECT3.domain.com
+      VIRTUAL_HOST:  $PROJECT3.demoserver.com
     volumes:
       - ./$PROJECT3/:/var/www/html
     volumes_from:
@@ -51,7 +48,6 @@ services:
 
   mariadb1:
     image: mariadb:$MARIADB_TAG
-    container_name: $PROJECT1.mariadb
     stop_grace_period: 30s
     environment:
       MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
@@ -61,7 +57,6 @@ services:
 
   mariadb2:
     image: mariadb:$MARIADB_TAG
-    container_name: $PROJECT2.mariadb
     stop_grace_period: 30s
     environment:
       MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
@@ -71,7 +66,6 @@ services:
 
   mariadb3:
     image: mariadb:$MARIADB_TAG
-    container_name: $PROJECT3.mariadb
     stop_grace_period: 30s
     environment:
       MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
@@ -88,7 +82,7 @@ services:
     depends_on:
       - mariadb1
     environment:
-      VIRTUAL_HOST: pma.domain.com
+      VIRTUAL_HOST: pma.demoserver.com
       MYSQL_USERNAME: root
       MYSQL_ROOT_PASSWORD: root
       PMA_HOSTS: mariadb1, mariadb2, mariadb3
@@ -100,7 +94,7 @@ services:
       - "8080:80"
       - "4443:443"
     volumes:
+      - ./certs:/etc/nginx/certs
       - /var/run/docker.sock:/tmp/docker.sock:ro
-
     restart: always
     privileged: true
