@@ -1,15 +1,15 @@
 #!/bin/bash
 
 # Required
-domain=$VIRTUAL_HOST
-commonname=$VIRTUAL_HOST
+domain=demoserver.com
+commonname=demoserver.com
 
 # Change to your company details
 country=IN
 state=Maharastra
 locality=Mumbai
-organization=TCS
-organizationalunit=LS
+organization=dockadrupal
+organizationalunit=web
 email=administrator@example.com
 
 
@@ -22,7 +22,7 @@ then
 fi
 
 echo "Creating Self Signed Certificate..."
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/$domain.key -out /etc/ssl/certs/$domain.crt \
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout $domain.key -out $domain.crt \
     -subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname/emailAddress=$email"
 
 

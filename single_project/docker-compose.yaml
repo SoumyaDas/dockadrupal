@@ -11,7 +11,6 @@ services:
       - drush
     volumes:
       - ./$PROJECT_DIR/:/var/www/html
-      - /var/run/docker.sock:/tmp/docker.sock:ro
     volumes_from:
       - drush
     restart: always
@@ -46,8 +45,8 @@ services:
       - "$PROJECT_HTTP_PORT:80"
       - "$PROJECT_HTTPS_PORT:443"
     volumes:
+      - ./certs:/etc/nginx/certs
       - /var/run/docker.sock:/tmp/docker.sock:ro
-
     restart: always
     privileged: true
 

@@ -12,11 +12,11 @@ DOCROOT=/var/www/html/web
 echo -e "# Creating virtual host configuration..."
 
 cd ${CONF_DIR}
-sudo rm ${CONF}
-sudo a2dissite ${CONF}
-sudo touch ${CONF}
-sudo chmod -R 777 ${CONF}
-sudo chown -R $USER:$USER ${CONF}
+rm ${CONF}
+a2dissite ${CONF}
+touch ${CONF}
+chmod -R 777 ${CONF}
+chown -R $USER:$USER ${CONF}
 FILE=${CONF}
 
 echo "<VirtualHost *:80>
@@ -75,14 +75,16 @@ echo "<VirtualHost *:80>
 
 </VirtualHost>" >> $FILE
 
-sudo a2ensite $FILE
-sudo service apache2 reload
+a2ensite $FILERUN a2enmod rewrite
+a2enmod ssl
+service apache2 restart
+
 
 function removehost() {
     if [ -n "$(grep $HOSTNAME /etc/hosts)" ]
     then
         echo "$HOSTNAME Found in your $ETC_HOSTS, Removing now...";
-        sudo sed -i".bak" "/$HOSTNAME/d" $ETC_HOSTS
+        sed -i".bak" "/$HOSTNAME/d" $ETC_HOSTS
     else
         echo "$HOSTNAME was not found in your $ETC_HOSTS";
     fi
@@ -99,7 +101,7 @@ function addhost() {
             echo "$HOSTNAME already exists : $(grep $HOSTNAME $ETC_HOSTS)"
         else
             echo "Adding $HOSTNAME to your $ETC_HOSTS";
-            sudo -- sh -c -e "echo '$HOSTS_LINE' >> /etc/hosts";
+            sh -c -e "echo '$HOSTS_LINE' >> /etc/hosts";
 
             if [ -n "$(grep $HOSTNAME /etc/hosts)" ]
                 then

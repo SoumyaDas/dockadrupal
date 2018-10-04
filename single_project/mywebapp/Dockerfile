@@ -33,15 +33,16 @@ ARG virtual_host
 # Update the default apache site with the config we created.
 COPY apache-config.conf /etc/apache2/sites-enabled/000-default.conf
 
-COPY config/addcert.sh /usr/local/bin/addcert.sh
-COPY config/addhost.sh /usr/local/bin/addhost.sh
+#COPY config/addcert.sh /usr/local/bin/addcert.sh
+#COPY config/addhost.sh /usr/local/bin/addhost.sh
 
 ENV VIRTUAL_HOST $virtual_host
-RUN chmod +x /usr/local/bin/addcert.sh
-RUN /usr/local/bin/addcert.sh
+#RUN chmod +x /usr/local/bin/addcert.sh
+#RUN /usr/local/bin/addcert.sh
 
 #RUN chmod +x /usr/local/bin/addhost.sh
 #RUN /usr/local/bin/addhost.sh
+
 
 # Clean repository
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
