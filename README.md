@@ -38,5 +38,6 @@ This project is licensed under the MIT open source license.
 ## Credit
 Thanks to Jason Wilder for awesome reverse proxy server --
 https://github.com/jwilder/nginx-proxy
+
 Thanks to Docker community for official images.
 
