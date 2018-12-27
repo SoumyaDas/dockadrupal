@@ -1,12 +1,5 @@
 ## Introduction
 
-
-
-**This README is outdated, will update soon.**
-
-
-
-
 **Build Docker Images for Drupal Environment Stack.**
 
 DockADrupal is an open source repository to orchestrate Drupal local environment.
