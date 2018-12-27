@@ -9,30 +9,43 @@
 
 **Build Docker Images for Drupal Environment Stack.**
 
-DockADrupal is an open source repository to orchestrate Drupal local environment. It has included two different project application scenario --
-  * Multi Project Environment &
-  * Single Project Environment
+DockADrupal is an open source repository to orchestrate Drupal local environment.
 
-The only different between the above two scenario is the dedicated database server for each project. Leveraging the docker command and respecting the docker principle I have decided to keep the database servers tightly coupled to its corresponding application server. You can check the corresponding docker-compose files to observe the difference.
 
 Each environment is consist of 
   * A docker-compose.yml file to define different elements of the Drupal environment.
   * Self-signed certificates under ./certs/ directory with the domain name "demoserver.com"
   * A Dockerfile under ./drush/ directory to build a shared drush container.
-  * A Dockerfile under ./mywebapp/(./mywebapp1/ | ./mywebapp2/ | ./mywebapp3/) directory to build an web application.
-  * The ./mywebapp/web directory is the docroot for your application which is configured in the default apache-config.conf file.
+  * A Dockerfile under ./mywebapp/ directory to build an web application.
+  * The ./mywebapp/web directory is the place where you have to placce your docroot for your application which is configured in the default apache-config.conf file.
   * .env file to chnage the versions and some environment variables from a single place. Though Dockerfile and the docker-compose files also contains other environments variables which are not expected to change frequently.
   
+<Project1> and <Project2> is the example directory to start with docker based applications.
+You should rename these directories according to your project name. 
+
+Drupal 7 web directory -- project1/mywebapp/web/docroot
+docroot is not present by default, you place your d7 project here in ...web/ directory and rename it to <docroot>. Now your application would be available to the apache webserver.
+ 
+To control application URL and PORT you have to edit .env file inside project1 directory.
+
+Currently apache is configured for https only.
+
+Repeat the above steps to create another application.
+
 ## How to Spin Up an Environment:
  
-  * $ cd multi_projects
-  * $ docker-compose build
-  * $ docker-compose up -d
+  
+* $ cd dockadrupal/project1
+* $ cp <...../drupal project> mywebapp/web/
+* $ mv <..../drupal project> to docroot
+* $ docker-compose build
+* $ docker-compose up -d
+* $ docker ps
  
- Add your virtual host name of your application (e.g. mywebapp1.demoserver.com) to the /etc/hosts file of your host O/S.
+ Add your virtual host name of your application (e.g. project1.demoserver.com) to the /etc/hosts file of your host O/S.
  
  Now browse your web application from your favourite browser (tested on chrome/fedora) with the url --
-  -- https://mywebapp1.demoserver.com:4443
+  -- https://project1.demoserver.com:<PORT>
   
 ## Maintenance
 
