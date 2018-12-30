@@ -26,6 +26,8 @@ services:
       MYSQL_DATABASE: $DB_NAME
       MYSQL_USER: $DB_USER
       MYSQL_PASSWORD: $DB_PASSWORD
+    volumes:
+      - datavolume:/var/lib/mysql
 
   phpmyadmin:
     container_name: $PROJECT_NAME.phpmyadmin
@@ -35,7 +37,7 @@ services:
     links:
       - mariadb:db
     environment:
-      VIRTUAL_HOST: $PHPMYADMIN_SUBDOMAIN.$PROJECT_DOMAIN
+      VIRTUAL_HOST: $PHPMYADMIN_SUBDOMAIN.$PROJECT_NAME.$PROJECT_DOMAIN
       MYSQL_USERNAME: root
       MYSQL_ROOT_PASSWORD: root
 
@@ -56,4 +58,5 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     restart: always
     privileged: true
-
+volumes:
+  datavolume: {}

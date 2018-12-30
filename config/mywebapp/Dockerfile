@@ -38,6 +38,8 @@ RUN apt-get install openssl -y
 #RUN a2enmod rewrite
 RUN a2enmod ssl
 
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 ## Argument list.
 
 ARG virtual_host
