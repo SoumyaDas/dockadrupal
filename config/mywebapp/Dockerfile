@@ -35,10 +35,14 @@ RUN apt-get install libpcre3 libpcre3-dev -y
 RUN pecl install oauth -y
 
 RUN apt-get install openssl -y
-#RUN a2enmod rewrite
+RUN a2enmod rewrite
 RUN a2enmod ssl
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN composer global require drush/drush:8.*
+
+ENV PATH /root/.composer/vendor/bin:${PATH}
 
 ## Argument list.
 
@@ -63,11 +67,9 @@ COPY certs/demoserver.com.key /usr/local/bin/demoserver.com.key
 COPY config/custom-php-settings.ini /usr/local/etc/php/conf.d/custom-php-settings.ini
 COPY config/apache-config.conf /etc/apache2/sites-enabled/000-default.conf
 
-RUN ln -s /drush/drush /usr/local/bin/drush
-
 ## Clean repository
 
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+#RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 EXPOSE 443
 
