@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Required
-domain=demoserver.com
-commonname=demoserver.com
+domain=dockadrupal.localhost
+commonname=dockadrupal.localhost
 
 # Change to your company details
 country=IN
@@ -10,7 +10,7 @@ state=Maharastra
 locality=Mumbai
 organization=dockadrupal
 organizationalunit=web
-email=administrator@example.com
+email=admin@dockadrupal.org
 
 
 if [ -z "$domain" ]
